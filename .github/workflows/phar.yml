@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -155,7 +155,7 @@ jobs:
     if: github.event_name == 'pull_request' && needs.compiler-tests.outputs.compiler_changed == 'true'
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Get base commit SHA
         id: base
@@ -164,7 +164,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         working-directory: .github/scripts
@@ -188,7 +188,7 @@ jobs:
 
       # saved to phar-file-checksum/phpstan.phar
       - name: Download old artifact by ID
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           artifact-ids: ${{ steps.find-artifact.outputs.artifact_id }}
           run-id: ${{ steps.find-artifact.outputs.run_id }}
@@ -209,7 +209,7 @@ jobs:
     steps:
       # saved to phpstan.phar
       - name: "Download base phpstan.phar"
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: phar-file-checksum-base
 
@@ -228,18 +228,18 @@ jobs:
     needs: download-base-sha-phar
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # saved to phar-file-checksum/phpstan.phar
       - name: "Download phpstan.phar"
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: phar-file-checksum
           path: phar-file-checksum
 
       # saved to phar-file-checksum-base/phpstan.phar
       - name: "Download base phpstan.phar"
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: phar-file-checksum-base
           path: phar-file-checksum-base
@@ -294,7 +294,7 @@ jobs:
           git_commit_gpgsign: true
 
       - name: "Checkout phpstan-dist"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: phpstan/phpstan
           path: phpstan-dist
@@ -307,7 +307,7 @@ jobs:
         run: echo "sha=$(sed -n '2p' .phar-checksum)" >> $GITHUB_OUTPUT
 
       - name: "Checkout phpstan-src"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           path: phpstan-src
@@ -337,7 +337,7 @@ jobs:
           fi
 
       - name: "Download phpstan.phar"
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: phar-file
 
@@ -383,7 +383,7 @@ jobs:
 
       - name: "Commit PHAR - tag"
         if: "startsWith(github.ref, 'refs/tags/')"
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_user_name: "phpstan-bot"
           commit_user_email: "ondrej+phpstanbot@mirtes.cz"
